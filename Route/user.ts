@@ -7,6 +7,6 @@ export const userRouter: Router = express.Router();
 
 userRouter.get('/',UserController.getAllUser)
 userRouter.post('/',UserController.userRegister)
-userRouter.put('/:userId',checkToken,UserController.updateUser)
-userRouter.delete('/:userId',checkAdminToken,UserController.deleteUser)
-userRouter.get('/:userId',checkToken,UserController.getUserDetail)
+userRouter.put('/:userId',UserController.updateUser)
+userRouter.delete('/:userId',UserController.deleteUser)
+userRouter.get('/:userId',UserController.getUserDetail)

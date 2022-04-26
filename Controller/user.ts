@@ -2,18 +2,22 @@ import { Request, Response, Router } from 'express';
 import User from '../Model/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { Factory } from '../Factory/factory';
 
 export class UserController {
     public static userRegister = async (req: Request, res: Response) => {
-        const { email } = req.body;
-        const factory = new Factory()
+        const { email, password, firstName, lastName, role } = req.body;
+        const hashedPassword = await bcrypt.hash(password,10)
         try {
             const user = await User.findOne({ email })
             if (!user) {
-                const model = factory.createUser(req.body, req.body.role)
-                model?.register()
-                return res.status(200).json({
+                const data = await User.create({
+                    email: email,
+                    password: hashedPassword,
+                    firstName : firstName,
+                    lastName : lastName,
+                    role: role
+                })
+                    return res.status(200).json({
                     success: true,
                     message: 'User register successful',
                 })
@@ -34,7 +38,7 @@ export class UserController {
         const { email, password } = req.body
         try {
             const user: any = await User.findOne({ email })
-            const jwtSecret: string = process.env.JWT_SECRET || " "
+            const jwtSecret: string = process.env.JWT_SECRET || " "            
             if (!user) {
                 return res.json({
                     success: false,
@@ -44,32 +48,21 @@ export class UserController {
             else if (user) {
                 await bcrypt.compare(password, user.password, (err, same) => {
                     if (same) {
-                        const { firstName, lastName, email, role } = user
                         const accessToken = jwt.sign({
                             userId: user._id,
-                            firstName,
-                            lastName,
-                            email,
-                            role,
+                            firstName: user.firstName,
+                            lastName: user.lastName,
+                            email: user.email,
+                            role: user.role,
                         }, jwtSecret)
-                        if (role === 'admin') {
-                            return res.status(200).json({
-                                success: true,
-                                message: 'Login successful',
-                                adminToken: accessToken
-                            })
-                        }
-                        else return res.status(200).json({
+                        console.log(user);
+                        console.log(accessToken);
+                        return res.status(200).json({
                             success: true,
                             message: 'Login successful',
                             accessToken
                         })
                     }
-                    else
-                        return res.json({
-                            success: false,
-                            message: 'Wrong email or password!'
-                        })
                 })
             }
         } catch (error) {
@@ -180,11 +173,18 @@ export class UserController {
     public static getAllUser = async (req: Request, res: Response) => {
         try {
             const users = await User.find({})
-            return res.status(200).json({
-                success: true,
-                message: 'Get user successfully',
-                data: users
-            })
+            if(users.length === 0){
+                return res.json({
+                    success:false,
+                    message:'There are no user!'
+                })
+            }else{
+                return res.status(200).json({
+                    success: true,
+                    message: 'Get user successfully',
+                    data: users
+                })
+            }
         } catch (error) {
             return res.json({
                 success: false,
