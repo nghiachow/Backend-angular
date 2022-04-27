@@ -55,8 +55,6 @@ export class UserController {
                             email: user.email,
                             role: user.role,
                         }, jwtSecret)
-                        console.log(user);
-                        console.log(accessToken);
                         return res.status(200).json({
                             success: true,
                             message: 'Login successful',
