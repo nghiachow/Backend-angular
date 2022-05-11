@@ -54,7 +54,7 @@ export class UserController {
                             lastName: user.lastName,
                             email: user.email,
                             role: user.role,
-                        }, jwtSecret)
+                        }, jwtSecret) 
                         return res.status(200).json({
                             success: true,
                             message: 'Login successful',

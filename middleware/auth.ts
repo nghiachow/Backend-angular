@@ -13,7 +13,7 @@ export const checkToken = (req: Request, res: Response, next: NextFunction) => {
     }
     try {
         jwt.verify(token, jwtSecret, (err, valid: any) =>{
-            if (valid.role === 'member' && valid.userId)
+            if (valid.role === 'customer' && valid.userId)
             next()
         })
     } catch (error) {
