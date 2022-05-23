@@ -4,10 +4,10 @@ import Category from '../Model/category';
 export class CategoryController {
     public static addCategory = async (req: Request, res: Response) => {
         try {
-            const {name, avatar} = req.body
+            const {name, icon} = req.body
             await Category.create({
                 name,
-                avatar
+                icon
             })
             return res.status(200).json({
                 success: true,
@@ -24,10 +24,10 @@ export class CategoryController {
     public static updateCategory = async (req: Request, res: Response) => {
         try {
             const {CategoryId} = req.params
-            const {name, avatar} = req.body
+            const {name, icon} = req.body
             await Category.findByIdAndUpdate(CategoryId,{
                 name : name,
-                avatar : avatar
+                icon : icon
             })
             res.status(200).json({
                 success: true,

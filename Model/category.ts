@@ -4,7 +4,7 @@ const CategorySchema = new Schema({
         type: String,
         required: true
     },
-    avatar: {
+    icon: {
         type: String
     }
 })

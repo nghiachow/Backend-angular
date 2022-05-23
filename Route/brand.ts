@@ -1,7 +1,6 @@
 import express from 'express';
 import { Router } from 'express';
 import { BrandController } from '../Controller/brand';
-import { checkToken } from '../middleware/auth';
 
 export const brandRouter: Router = express.Router();
 

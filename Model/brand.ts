@@ -8,9 +8,10 @@ const BrandSchema = new Schema({
         type: String
     },
     category: {
-        type: String,
+        required: true,
+        type: String
     },
-    avatar: {
+    icon: {
         type: String
     },
 })

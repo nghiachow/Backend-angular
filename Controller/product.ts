@@ -3,13 +3,14 @@ import Product from '../Model/product'
 
 export class ProductController {
     public static addProduct = async (req:Request,res:Response) => {
-        const {brandId} = req.params
+        const {brandId, categoryId} = req.params
         try {
             const {name, price, images, saled, quantity, saleOf, status} = req.body
             await Product.create({
                 name: name,
                 price: price, 
                 images: images,
+                category: categoryId,
                 brand: brandId,
                 saled: saled,
                 quantity: quantity,
@@ -30,13 +31,14 @@ export class ProductController {
     }
     public static updateProduct = async (req: Request, res: Response) => {
         const {id} = req.params
-        const {name, price, images, brand, saled, quantity, saleOf, status} = req.body
+        const {name, price, images, brand, category, saled, quantity, saleOf, status} = req.body
         try {
             await Product.findByIdAndUpdate(id,{
                 name: name,
                 price: price, 
                 images: images,
                 brand: brand,
+                category: category,
                 saled: saled,
                 quantity: quantity,
                 saleOf: saleOf,
@@ -54,6 +56,27 @@ export class ProductController {
             })
         }
     }                            
+    public static searchProduct = async (req: Request, res: Response) => {
+        const {proName} = req.params
+        proName.toLowerCase();
+        try {
+            const products = await Product.find({name: proName})
+            res.status(200).json({
+                success: true,
+                message: 'Search product successfully',
+                data: products
+            })
+            
+        } catch (error) {
+            res.json({
+                err: error,
+                success: false,
+                message:'Get Product detail failed'
+            })
+        }
+        
+        
+    }
     public static getProduct = async (req: Request,res: Response) => {
         const {productId} = req.params
         try {

@@ -1,8 +1,7 @@
 import {model, Schema} from 'mongoose'
 const productInBill = new Schema({
     productId: {
-        type: Schema.Types.ObjectId,
-        ref: "products",
+        type: String,
         require: true
     },
     quantityInCart: {
@@ -28,8 +27,7 @@ const billSchema = new Schema({
         require: true
     },
     userId: {
-        type: Schema.Types.ObjectId,
-        ref: 'users',
+        type: String,
         required: false
     },
     name: {

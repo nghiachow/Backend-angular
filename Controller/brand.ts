@@ -7,12 +7,12 @@ export class BrandController {
     public static addBrand = async (req:Request,res:Response) => {
         const {id} = req.params
         try {
-            const {name, description, avatar} = req.body
+            const {name, description, icon} = req.body
             await Brand.create({
                 name: name,
                 description: description,
                 category: id,
-                avatar: avatar,
+                icon: icon,
             })
             return res.status(200).json({
                 success: true,
@@ -28,12 +28,12 @@ export class BrandController {
     }
     public static updateBrand = async (req: Request, res: Response) => {
         const {id} = req.params
-        const {name, description, avatar} = req.body
+        const {name, description, icon} = req.body
         try {
             await Brand.findByIdAndUpdate(id,{
                 name,
                 description,
-                avatar
+                icon
             })    
             return res.status(200).json({
                 success: true,
